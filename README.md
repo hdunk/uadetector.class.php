@@ -24,7 +24,6 @@ for detection of current user agent:
 <dd>  $ua_obj->os,</dd>
 <dd>  $ua_obj->platform,</dd>
 <dd>  $ua_obj->emulation,</dd>
-<dd>  ...</dd>
 <dd>  $ua_obj->agenttype (
       B=Browser, 
 			F=feedreader (could also have type=R) 
