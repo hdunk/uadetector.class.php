@@ -3,13 +3,13 @@ UADetector PHP class
 
 A PHP4+ class for fast, accurate user agent detection.
 
-version: 0.9.2
+version: 0.9.3
 
 author: helened
 
 Author URI: [http://helenesit.com](http://helenesit.com)
 
-Copyright (c) 2009-2016 Helene Duncker
+Copyright (c) 2009-2018 Helene Duncker
 
 ### Usage:
 for detection of current user agent:
@@ -41,4 +41,5 @@ for detection of current user agent:
 
 
 ### Changelog:
+  v0.9.3: updated for PHP7 compatibility
   v0.9.2: updated for detection of Microsoft Edge browser on Windows and Windows Phone

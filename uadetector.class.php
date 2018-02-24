@@ -1,14 +1,13 @@
 <?php
 /**
- * UADetector.class.php
- * Description: a PHP4 class for browser and spider identification
- * Updated: 2016-09-01
- * @version 0.9.2
+ * Class for in-depth user agent detection.
+ * Updated: 2017-09-04
+ * @version 0.9.3
  * @author helened
  * Author URI: http://helenesit.com
  *
- * @copyright Copyright (c) 2009-2016 Helene Duncker
- * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License
+ * @copyright Copyright (c) 2009-2018 Helene Duncker
+ * @license http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of 
@@ -71,11 +70,11 @@ class UADetector {
 	//var $is_active_agent=false;	//private 
 
 /**
- * PHP4 compatible constructor
+ * constructor
  * @param 	string $ua (optional)
  * @return	object(16)
  */
-function uadetector($ua=""){
+function __construct($ua=""){
 	$this->is_browser=false;
 	$this->is_mobile=false;
 	$this->is_robot=false;
@@ -119,15 +118,15 @@ function uadetector($ua=""){
 	unset($this->_done_browsers,$this->_done_spiders,$this->is_active_agent);
 	return;
 } //end function __construct
+/** PHP4-compatible constructor */
+function uadetector($ua=""){$this->__construct($ua);}
 	
 /**
  * Check user agent against a known list of top user agents
  * @return associative array containing agent details
  */
 function isTopAgent($agent=""){
-	//NOTE: Top agents are based on recent log data from 
-	//  "WassUp", a web statistics plugin for WordPress 2.2+ 
-	//   available at http://www.wpwp.org
+	//NOTE: Top agents are based on log data from "WassUp", a web statistics plugin for WordPress available at http://www.wpwp.org
 	// User agent parameter or class variable is required.
 	$ua="";
 	$is_current_ua=false;
@@ -142,7 +141,6 @@ function isTopAgent($agent=""){
 		$top_ua['name']="Googlebot";
 		$top_ua['version']=$match[1];
 		$top_ua['agenttype']="R";
-
 	// #2.1 Microsoft Edge on Windows 10
 	}elseif(preg_match('#^Mozilla\/[0-9.\s]+\((Windows\sNT\s[0-9.]+;.+)\)\sAppleWebKit\/[0-9.]+\s\(.+\)(?:\s(?:Chrome|Safari)\/[0-9.]+){2,}\sEdge\/([0-9\.]+)$#',$ua,$match)>0){
 		$top_ua['name']='Edge';
@@ -168,7 +166,6 @@ function isTopAgent($agent=""){
 		$top_ua['os']=$this->winOSversion($os);
 		$top_ua['agenttype']='B';
 		if(!empty($match[3]))$top_ua['device']=$match[3];
-
 	// #3.1 Firefox and Gecko browsers on Windows 8.1+
 	}elseif(preg_match('#^Mozilla/\d\.\d\s\((Windows\sNT\s\d\.\d;(?:\sW[inOW]{2}64;)?)\srv\:[0-9\.]+\)\sGecko/[0-9a-z]+\s([A-Za-z\-0-9]+)/(\d+(?:\.\d+)+)(?:\s\(.*\))?$#',$ua,$match)>0){
 		$top_ua['name']=$match[2];
@@ -186,7 +183,6 @@ function isTopAgent($agent=""){
 		$os=$match[1];
 		$top_ua['os']=$this->winOSversion($os);
 		$top_ua['agenttype']='B';
-
 	// #4 Yahoo!Slurp
 	}elseif(preg_match('#^Mozilla/\d\.\d\s\(compatible;\s(Yahoo\!\s([A-Z]{2})?\s?Slurp)/?(\d\.\d)?;\shttp\://help\.yahoo\.com/.*\)$#i',$ua,$match)>0){
 		$top_ua['name']=$match[1];
@@ -248,7 +244,6 @@ function isTopAgent($agent=""){
 		else list($top_ua['os'])=$this->OSversion($os,$top_ua['platform'],$ua);
 		$top_ua['language']=$match[3];
 		$top_ua['agenttype']='B';
-
 	// #10 Google Chrome browser on all platforms with or without language string
 	}elseif(preg_match('#^Mozilla/\d+\.\d+\s(?:[A-Za-z0-9\./]+\s)?\((?:([A-Za-z0-9/\.]+);(?:\sU;)?\s?)?([^;]*)(?:;\s[A-Za-z]{3}64)?;?\s?([a-z]{2}(?:\-[A-Za-z]{2})?)?\)\sAppleWebKit/[0-9\.]+\+?\s\((?:KHTML,\s)?like\sGecko\)(?:\s([A-Za-z0-9_\-]+[^i])/([A-Za-z0-9\.]+)){1,3}(?:\sSafari/[0-9\.]+)?$#',$ua,$match)>0){
 		$top_ua['name']=$match[4];
@@ -547,7 +542,7 @@ function isMobileAgent($agent=""){
 	}
 
 	//known mobile devices...
-	if(preg_match('#(alcatel|amoi|blackberry|docomo\s|htc|ipaq|kindle|kwc|lge|lg\-|mobilephone|motorola|nexus\sone|nokia|PDA|Palm|Samsung|sanyo|smartphone|SonyEricsson|\st\-mobile|vodafone|zte)[/\-_\s]?((?:\d|[a-z])+\d+[a-z]*)*#i',$ua,$pcs)>0){
+	if(preg_match('#(alcatel|amoi|blackberry|docomo\s|htc|ipaq|kindle|kwc|lge|lg\-|lumia|mobilephone|motorola|nexus\sone|nokia|PDA|Palm|Samsung|sanyo|smartphone|SonyEricsson|\st\-mobile|vodafone|zte)[/\-_\s]?((?:\d|[a-z])+\d+[a-z]*)*#i',$ua,$pcs)>0){
 		$ismobile=true;
 		$wap['device']=trim($pcs[1],'-_ /');
 		if(!empty($pcs[2]))$wap['model']=$pcs[2];
